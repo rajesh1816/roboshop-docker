@@ -1,10 +1,10 @@
-FROM python:3.9 AS builder
+FROM python:3.9-slim AS builder
 WORKDIR /opt/server
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 
-FROM python:3.9-alpine 
+FROM python:3.9-slim
 WORKDIR /opt/server
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9 
 COPY --from=builder /usr/local/bin /usr/local/bin
