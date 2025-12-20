@@ -15,7 +15,7 @@ services:
     image: rajesh947/mongodb:v1
     container_name: mongodb
     volumes:
-      - mongodb: /data/db
+      - mongodb:/data/db
   
   catalogue:
     image: rajesh947/catalogue:v1
@@ -27,7 +27,7 @@ services:
     image: redis:7.0
     container_name: redis
     volumes:
-      - redis: /data
+      - redis:/data
   
   user:
     image: rajesh947/user:v1
@@ -47,7 +47,7 @@ services:
     image: rajesh947/mysql:v1
     container_name: mysql
     volumes:
-      - mysql: /var/lib/mysql
+      - mysql:/var/lib/mysql
   
   shipping:
     image: rajesh947/shipping:v1
@@ -63,7 +63,7 @@ services:
       - RABBITMQ_DEFAULT_USER=roboshop
       - RABBITMQ_DEFAULT_PASS=roboshop123
     volumes:
-      - rabbitmq: /var/lib/rabbitmq
+      - rabbitmq:/var/lib/rabbitmq
 
 
   payment:
