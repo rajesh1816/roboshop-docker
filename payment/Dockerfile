@@ -1,7 +1,18 @@
 FROM python:3.9-slim AS builder
 WORKDIR /opt/server
 COPY requirements.txt .
+
+# Install build dependencies for uwsgi
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libpcre3 \
+    libpcre3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip3 install --no-cache-dir -r requirements.txt
+
+
 
 
 FROM python:3.9-slim
