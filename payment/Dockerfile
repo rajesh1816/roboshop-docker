@@ -1,4 +1,4 @@
-FROM python:3.9-slim AS builder
+FROM python:3.9 AS builder
 WORKDIR /opt/server
 COPY requirements.txt .
 
@@ -6,17 +6,18 @@ COPY requirements.txt .
 RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
-    libpcre3 \
-    libpcre3-dev \
+    libpcre2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 
 
-
 FROM python:3.9-slim
 WORKDIR /opt/server
+RUN apt-get update && apt-get install -y \
+    libpcre2-8-0 \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/lib/python3.9 /usr/local/lib/python3.9 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY payment.ini .
