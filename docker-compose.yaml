@@ -14,9 +14,6 @@ services:
   mongodb:
     image: rajesh947/mongodb:v1
     container_name: mongodb
-    environment:
-      - MONGO=true
-      - MONGO_URL="mongodb://mongodb:27017/catalogue"
     volumes:
       - mongodb:/data/db
   
@@ -25,6 +22,9 @@ services:
     container_name: catalogue
     depends_on:
       - mongodb
+    environment:
+      - MONGO=true
+      - MONGO_URL="mongodb://mongodb:27017/catalogue"
   
   redis:
     image: redis:7.0
@@ -45,6 +45,10 @@ services:
     depends_on:
       - catalogue
       - redis
+    environment:
+      - REDIS_HOST=redis
+      - CATALOGUE_HOST=catalogue 
+      - CATALOGUE_PORT=8080
     
   mysql:
     image: rajesh947/mysql:v1
