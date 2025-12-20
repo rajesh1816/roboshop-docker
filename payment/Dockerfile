@@ -1,4 +1,4 @@
-FROM python:3.9-alpine AS builder
+FROM python:3.9 AS builder
 WORKDIR /opt/server
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
