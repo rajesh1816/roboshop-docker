@@ -27,7 +27,7 @@ USER roboshop
 EXPOSE 8000
 
 # Run uWSGI in foreground to keep container alive
-CMD ["uwsgi", "--ini", "payment.ini"]
+CMD ["uwsgi", "--ini", "payment.ini", "--master", "--http", "0.0.0.0:80", "--die-on-term"]
 
 
 
