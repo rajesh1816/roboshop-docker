@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 # Install Python dependencies into /install folder
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN pip3 install --no-cache-dir --prefix=/install -r requirements.txt
 
 
 
