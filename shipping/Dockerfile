@@ -1,5 +1,4 @@
 FROM maven AS builder
-#FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /opt/server
 COPY pom.xml .
 COPY src /opt/server/src
