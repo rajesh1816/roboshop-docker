@@ -1,38 +1,26 @@
-FROM python:3.9-slim AS builder
+FROM python:3.9.23-alpine3.22 AS builder
 WORKDIR /opt/server
-
-# Install build dependencies only (removed in final image)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential gcc libffi-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install build dependencies
+RUN apk add --no-cache python3-dev build-base linux-headers pcre-dev
 COPY requirements.txt .
-# Install Python dependencies into /install folder
 RUN pip3 install --no-cache-dir --prefix=/install -r requirements.txt
 
 
 
-
-FROM python:3.9-slim
+# Stage 2: Final image
+FROM python:3.9.23-alpine3.22
+EXPOSE 8080
 WORKDIR /opt/server
-# Create roboshop user and group
-RUN groupadd -r roboshop && useradd -r -g roboshop roboshop \
-    && mkdir -p /opt/server
-
-# Copy installed dependencies from builder stage
-COPY --from=builder /install /usr/local
-COPY *.py .
-COPY payment.ini .
-RUN chown -R roboshop:roboshop /opt/server
+# Runtime dependencies only
+RUN apk add --no-cache pcre
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
 USER roboshop
-EXPOSE 8000
-
-# Run uWSGI in foreground to keep container alive
-CMD ["uwsgi", "--ini", "payment.ini", "--master", "--http", "0.0.0.0:80", "--die-on-term"]
-
-
-
-
-
+# Copy installed Python packages from builder
+COPY --from=builder /install /usr/local
+# Copy application code
+COPY --chown=roboshop:roboshop payment.ini .
+COPY --chown=roboshop:roboshop *.py .
+CMD ["uwsgi", "--ini", "payment.ini"]
 
 
 
